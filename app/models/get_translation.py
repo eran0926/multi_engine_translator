@@ -53,9 +53,13 @@ def get_cambridge_translate(text=""):
 
             tran['to'] = []
             # def_bodys = page_body.find_all("div", class_="sense-body")[i].find_all("div", class_="def-body")
-            def_bodys = page_body.find_all(
-                "div", class_="pr entry-body__el")[i].find_all("div", class_="pr dsense")
+            
+            if page_body.find_all("div", class_="pr entry-body__el") :
+                def_bodys = page_body.find_all("div", class_="pr entry-body__el")[i].find_all("div", class_="pr dsense")  # 'pos-body'='pr entry-body__el'?
             # .find_all("div", class_="def-body")
+            else:
+                def_bodys = page_body.find_all("span", class_="phrase-di-body dphrase-di-body")
+            
             for def_body in def_bodys:
                 tran['to'].append(def_body.find("div", "def-block ddef_block").find(
                     "span", class_="trans").get_text())
@@ -177,8 +181,8 @@ def get_predict_data(text):
 
 if __name__ == "__main__":
     # main_logger = get_logger("main")
-    # t = get_cambridge_translate('how are you?')
-    t = get_cambridge_translate('honour')
+    t = get_cambridge_translate('how are you?')
+    # t = get_cambridge_translate('honour')
     # t = get_azure_translate("he")
     # get_predict_data("ap")
     print("-----------------------")
