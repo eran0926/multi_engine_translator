@@ -1,0 +1,20 @@
+.swich-btn {
+    background-image: url('../img/swich.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.fix-table {
+    table-layout: fixed;
+}
+
+.fix-table td {
+    overflow: auto;
+    overflow-wrap: break-word;
+}
+
+.btn-td {
+    display: flex;
+    justify-content: space-between;
+}
