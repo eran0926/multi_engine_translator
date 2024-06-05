@@ -10,6 +10,7 @@ from pathlib import Path
 config = configparser.ConfigParser(interpolation=None)
 # config.read(Path('config/config.ini'))
 config.read(Path(__file__).parent.parent.joinpath('config', 'config.ini'))
+config.read(Path(__file__).parent.parent.joinpath('config', 'secret_config.ini'))
 
 
 def get_page(url, header=None, params=None):
@@ -53,9 +54,10 @@ def get_cambridge_translate(text=""):
             tran['to'] = []
             # def_bodys = page_body.find_all("div", class_="sense-body")[i].find_all("div", class_="def-body")
             def_bodys = page_body.find_all(
-                "div", class_="pr entry-body__el")[i].find_all("div", class_="def-body")
+                "div", class_="pr entry-body__el")[i].find_all("div", class_="pr dsense")
+            # .find_all("div", class_="def-body")
             for def_body in def_bodys:
-                tran['to'].append(def_body.find(
+                tran['to'].append(def_body.find("div", "def-block ddef_block").find(
                     "span", class_="trans").get_text())
             # .find_all("span", class_="trans").get_text()
             # .append(t.find("span", class_="trans").get_text())
@@ -68,6 +70,45 @@ def get_cambridge_translate(text=""):
     else:
         return None
 
+# def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
+#     if tar_lan == "":
+#         tar_lan = "zh-Hant"
+
+#     key = config["azure"]["key"]
+#     endpoint = config["azure"]["endpoint"]
+#     location = config["azure"]["location"]
+
+#     path = '/translate'
+#     constructed_url = endpoint + path
+
+#     params = {
+#         'api-version': '3.0',
+#         'to': tar_lan
+#     }
+
+#     if ori_lan != None and ori_lan != "":
+#         params['from'] = ori_lan
+
+#     headers = {
+#         'Ocp-Apim-Subscription-Key': key,
+#         # location required if you're using a multi-service or regional (not global) resource.
+#         'Ocp-Apim-Subscription-Region': location,
+#         'Content-type': 'application/json',
+#         'X-ClientTraceId': str(uuid.uuid4())
+#     }
+
+#     body = [{
+#         'text': text
+#     }]
+
+#     r = requests.post(constructed_url, params=params,
+#                       headers=headers, json=body)
+#     print(r.status_code)
+#     if r.status_code == 200:
+#         response = r.json()
+#         return response[0]["translations"][0]["text"]
+#     else:
+#         return None
 
 def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
@@ -136,7 +177,8 @@ def get_predict_data(text):
 
 if __name__ == "__main__":
     # main_logger = get_logger("main")
-    t = get_cambridge_translate('respect')
+    # t = get_cambridge_translate('how are you?')
+    t = get_cambridge_translate('honour')
     # t = get_azure_translate("he")
     # get_predict_data("ap")
     print("-----------------------")
