@@ -5,6 +5,13 @@ from bs4 import BeautifulSoup
 # from log import get_logger
 import configparser
 from pathlib import Path
+from google.cloud import translate_v2 as translate
+
+try:
+    from .log import get_logger
+except ImportError:
+    from log import get_logger
+    print("Using absoloute import")
 
 # read config
 config = configparser.ConfigParser(interpolation=None)
@@ -12,6 +19,7 @@ config = configparser.ConfigParser(interpolation=None)
 config.read(Path(__file__).parent.parent.joinpath('config', 'config.ini'))
 config.read(Path(__file__).parent.parent.joinpath('config', 'secret_config.ini'))
 
+logger = get_logger(__name__)
 
 def get_page(url, header=None, params=None):
     header = header or {
@@ -21,18 +29,26 @@ def get_page(url, header=None, params=None):
     r = requests.get(url, headers=headers, params=params)
     return r
 
+def get_predict_data(text):
+    url = "https://dictionary.cambridge.org/zht/autocomplete/amp?dataset=english-chinese-traditional"
+    params = {'q': text}
+    r = get_page(url, params=params)
+    if r.status_code == 200:
+        response = r.json()
+        return response
+    else:
+        return None
 
 def get_cambridge_translate(text=""):
     '''
     get cambridge dictionary translate
     '''
     text = text.replace(' ', '-')
-    print(text)
-    url = config["cambridge"]["base_url"] + text
+    base_url = config["cambridge"]["base_url"]
+    url = base_url + text
     r = get_page(url)
-    print(r.status_code)
-    print(r.url)
-    if r.status_code == 200:
+
+    if r.status_code == 200 and r.url != base_url:
         soup = BeautifulSoup(r.text, "html.parser")
         page_body = soup.find("div", class_="di-body")
 
@@ -47,25 +63,17 @@ def get_cambridge_translate(text=""):
                     i].get_text()
             except:
                 tran['pos'] = None
-            # tran['to'] = page_body.find_all(
-            # tran['to'] =
-            # sense-body
 
             tran['to'] = []
-            # def_bodys = page_body.find_all("div", class_="sense-body")[i].find_all("div", class_="def-body")
             
             if page_body.find_all("div", class_="pr entry-body__el") :
-                def_bodys = page_body.find_all("div", class_="pr entry-body__el")[i].find_all("div", class_="pr dsense")  # 'pos-body'='pr entry-body__el'?
-            # .find_all("div", class_="def-body")
+                def_bodys = page_body.find_all("div", class_="pr entry-body__el")[i].find_all("div", class_="dsense")  # 'pos-body'='pr entry-body__el'?
             else:
                 def_bodys = page_body.find_all("span", class_="phrase-di-body dphrase-di-body")
-            
+
             for def_body in def_bodys:
                 tran['to'].append(def_body.find("div", "def-block ddef_block").find(
                     "span", class_="trans").get_text())
-            # .find_all("span", class_="trans").get_text()
-            # .append(t.find("span", class_="trans").get_text())
-            print(tran, '<<tran')
             trans.append(tran)
 
         if trans == []:
@@ -74,45 +82,15 @@ def get_cambridge_translate(text=""):
     else:
         return None
 
-# def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
-#     if tar_lan == "":
-#         tar_lan = "zh-Hant"
+def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
+    if tar_lan == "":
+        tar_lan = "zh-Hant"
 
-#     key = config["azure"]["key"]
-#     endpoint = config["azure"]["endpoint"]
-#     location = config["azure"]["location"]
+    translate_client = translate.Client()
 
-#     path = '/translate'
-#     constructed_url = endpoint + path
+    result = translate_client.translate(text, target_language=tar_lan)
 
-#     params = {
-#         'api-version': '3.0',
-#         'to': tar_lan
-#     }
-
-#     if ori_lan != None and ori_lan != "":
-#         params['from'] = ori_lan
-
-#     headers = {
-#         'Ocp-Apim-Subscription-Key': key,
-#         # location required if you're using a multi-service or regional (not global) resource.
-#         'Ocp-Apim-Subscription-Region': location,
-#         'Content-type': 'application/json',
-#         'X-ClientTraceId': str(uuid.uuid4())
-#     }
-
-#     body = [{
-#         'text': text
-#     }]
-
-#     r = requests.post(constructed_url, params=params,
-#                       headers=headers, json=body)
-#     print(r.status_code)
-#     if r.status_code == 200:
-#         response = r.json()
-#         return response[0]["translations"][0]["text"]
-#     else:
-#         return None
+    return result["translatedText"]
 
 def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
@@ -135,7 +113,6 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
     headers = {
         'Ocp-Apim-Subscription-Key': key,
-        # location required if you're using a multi-service or regional (not global) resource.
         'Ocp-Apim-Subscription-Region': location,
         'Content-type': 'application/json',
         'X-ClientTraceId': str(uuid.uuid4())
@@ -147,7 +124,6 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
     r = requests.post(constructed_url, params=params,
                       headers=headers, json=body)
-    print(r.status_code)
     if r.status_code == 200:
         response = r.json()
         return response[0]["translations"][0]["text"]
@@ -157,34 +133,32 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
 def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
     engine_list = ["cambridge", "azure"]
+    logger.debug(engines)
     response = {}
     for engine in engines:
         if engine == "cambridge":
             response[engine] = get_cambridge_translate(text)
         elif engine == "azure":
             response[engine] = get_azure_translate(text, ori_lan, tar_lan)
+        elif engine == "google":
+            response[engine] = get_azure_translate(text, ori_lan, tar_lan)
         else:
             response[engine] = None
+    logger.info(response)
     return response
 
 
-def get_predict_data(text):
-    url = "https://dictionary.cambridge.org/zht/autocomplete/amp?dataset=english-chinese-traditional"
-    params = {'q': text}
-    r = get_page(url, params=params)
-    if r.status_code == 200:
-        response = r.json()
-        return response
-    else:
-        return None
 
 
 if __name__ == "__main__":
     # main_logger = get_logger("main")
-    t = get_cambridge_translate('how are you?')
+    # t = get_cambridge_translate('how are you?')
+    t = get_cambridge_translate('hi')
     # t = get_cambridge_translate('honour')
     # t = get_azure_translate("he")
     # get_predict_data("ap")
+    # t = get_translation("How are you?", engines=["google", "azure", "cambridge"])
+    # t = get_translation("Hoefefefefefefefefe?as", engines=[ "cambridge"])
     print("-----------------------")
     print(t)
     # main_logger.debug(t)

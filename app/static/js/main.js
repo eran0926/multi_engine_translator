@@ -15,9 +15,9 @@ document.getElementById("in_textarea").addEventListener('input', () => {
 
 
 function switch_lan() {
-    var ori_lan_select = $('#ori_lan_select');
-    var tar_lan_select = $('#tar_lan_select');
-    var ori_tar_lan = tar_lan_select.val();
+    let ori_lan_select = $('#ori_lan_select');
+    let tar_lan_select = $('#tar_lan_select');
+    let ori_tar_lan = tar_lan_select.val();
     tar_lan_select.val(ori_lan_select.val());
     ori_lan_select.val(ori_tar_lan);
 }
@@ -30,7 +30,7 @@ function in_textarea_change(text) {
 }
 
 function get_predicts(text) {
-    var re = new Array();
+    let re = new Array();
     re.length = 0;
     // for (var i = 0; i < 10; i++) {
     //     re[i] = { "word": "" }
@@ -176,6 +176,14 @@ function changeTranResult(data) {
             else if (engine == 'azure') {
                 html = '<tr>'
                 html += '<td>' + '微軟' + '</td>'
+                html += '<td>' + 'none' + '</td>\n'
+                html += '<td>' + tranData + '</td>\n'
+                html += '</tr>'
+                resultTable.html(resultTable.html() + html)
+            }
+            else if (engine == 'google') {
+                html = '<tr>'
+                html += '<td>' + 'Google' + '</td>'
                 html += '<td>' + 'none' + '</td>\n'
                 html += '<td>' + tranData + '</td>\n'
                 html += '</tr>'

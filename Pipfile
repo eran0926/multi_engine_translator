@@ -8,6 +8,7 @@ requests = "*"
 flask = "*"
 beautifulsoup4 = "*"
 gunicorn = "*"
+google-cloud-translate = "==2.0.1"
 
 [dev-packages]
 
