@@ -1,0 +1,73 @@
+2024-06-08 15:44:26,185 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-08 15:44:26,844 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 15:44:26,846 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 15:44:28,107 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}], 'google': '你好', 'azure': '你好'}
+2024-06-08 15:45:58,258 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-08 15:45:58,902 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 15:45:58,904 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 15:45:59,907 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}], 'google': '你好', 'azure': '你好'}
+2024-06-08 15:52:32,345 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 15:52:32,995 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 15:52:32,996 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 15:52:33,103 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 15:55:06,434 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 15:55:07,017 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 15:55:07,018 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 15:55:07,125 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 16:01:53,638 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 16:01:54,276 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 16:01:54,276 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:01:54,377 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 16:02:11,873 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 16:02:12,477 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 16:02:12,477 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:02:12,574 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 16:02:40,133 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 16:02:40,688 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 16:02:40,688 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:02:40,837 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 16:02:45,665 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 16:02:46,374 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 16:02:46,376 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:02:46,529 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 16:04:45,902 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 16:04:46,580 get_translation.py Logger:app.models.get_translation DEBUG:200
+2024-06-08 16:04:46,580 get_translation.py Logger:app.models.get_translation DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:04:46,698 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': []}, {'from': 'HI', 'pos': None, 'to': []}]}
+2024-06-08 16:05:38,669 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:05:38,670 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:07:12,499 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:07:12,500 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:08:10,961 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:08:10,961 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:08:39,818 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:08:39,818 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:09:04,863 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:09:04,863 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:09:27,127 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:09:27,127 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:09:45,045 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:09:45,060 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:11:16,369 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:11:16,369 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:11:28,104 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:11:28,104 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:17:28,192 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:17:28,192 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/how-are-you
+2024-06-08 16:18:27,657 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:18:27,659 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/how-are-you
+2024-06-08 16:18:37,963 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:18:37,963 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:18:53,849 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:18:53,850 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:19:54,363 get_translation.py Logger:__main__ DEBUG:200
+2024-06-08 16:19:54,363 get_translation.py Logger:__main__ DEBUG:https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/hi
+2024-06-08 16:42:06,783 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge']
+2024-06-08 16:42:07,504 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': ['（通常用作熟人間的問候語）嗨，喂']}, {'from': 'HI', 'pos': None, 'to': ['（美國）夏威夷州（寫地址時Hawaii的縮寫）']}]}
+2024-06-08 16:42:15,241 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-08 16:42:17,225 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'hi', 'pos': 'exclamation', 'to': ['（通常用作熟人間的問候語）嗨，喂']}, {'from': 'HI', 'pos': None, 'to': ['（美國）夏威夷州（寫地址時Hawaii的縮寫）']}], 'google': '你好', 'azure': '你好'}
+2024-06-08 20:16:05,925 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-08 20:16:38,365 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-08 20:16:40,362 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'optimization', 'pos': 'noun', 'to': ['優化，完善']}], 'google': '優化', 'azure': '優化'}
+2024-06-08 20:16:55,439 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-08 20:16:56,718 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'optimize', 'pos': 'verb', 'to': ['使優化，完善']}], 'google': '優化', 'azure': '優化'}

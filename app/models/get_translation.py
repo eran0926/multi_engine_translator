@@ -124,6 +124,7 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
     r = requests.post(constructed_url, params=params,
                       headers=headers, json=body)
+    # print(r.json())
     if r.status_code == 200:
         response = r.json()
         return response[0]["translations"][0]["text"]
@@ -136,14 +137,14 @@ def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
     logger.debug(engines)
     response = {}
     for engine in engines:
-        if engine == "cambridge":
+        if engine == "cambridge" and ori_lan =="en":
             response[engine] = get_cambridge_translate(text)
         elif engine == "azure":
             response[engine] = get_azure_translate(text, ori_lan, tar_lan)
         elif engine == "google":
-            response[engine] = get_azure_translate(text, ori_lan, tar_lan)
-        else:
-            response[engine] = None
+            response[engine] = get_google_translate(text, ori_lan, tar_lan)
+        # else:
+            # response[engine] = None
     logger.info(response)
     return response
 
