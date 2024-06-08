@@ -3,14 +3,27 @@ $('#swich-lan-btn').on('click', switch_lan);
 $('#tranSubmitBtn').on('click', submitTran)
 // $('#in_textarea').on('input', in_textarea_change);
 let queued = false
+let timer
+let old_input = ''
 document.getElementById("in_textarea").addEventListener('input', () => {
-    if (!queued) {
-        queued = true
-        requestIdleCallback(() => {
-            in_textarea_change(document.getElementById("in_textarea").value)
-            queued = false
-        })
-    }
+    old_input = document.getElementById("in_textarea").value
+    clearTimeout(timer);
+    requestIdleCallback(() => {
+        timer = setTimeout(() => {
+            if (document.getElementById("in_textarea").value == old_input) {
+                if (!queued) {
+                    queued = true
+                    setTimeout(function () {
+
+                        console.log("catching predict")
+                        in_textarea_change(document.getElementById("in_textarea").value)
+                        queued = false
+
+                    }, 300);
+                }
+            }
+        }, 100);
+    })
 })
 
 
@@ -63,7 +76,7 @@ function get_predicts(text) {
 
 function change_predict(predict_arr) {
     predicts = predict_arr
-    console.log(predicts)
+    // console.log(predicts)
     // console.log(typeof (predicts))
     max_predict = 5;
     predict_num = Math.min(max_predict, predicts.length)

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+    <button id="btn">aaa</button>
+    <script>
+        var clk
+        document.getElementById("btn").addEventListener("click", function (event) {
+            console.log("clk")
+            clearTimeout(clk)
+            clk = setTimeout(() => {
+                alert("click")
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
