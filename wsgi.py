@@ -4,9 +4,9 @@ from app import create_app
 app = create_app('testing')
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+# @app.route('/')
+# def hello_world():
+#     return 'Hello World!'
 
 
 if __name__ == '__main__':
