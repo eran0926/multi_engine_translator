@@ -1,0 +1,24 @@
+Frontend <-> Backend.vm.view.get_predicts
+Frontend <-> Backend.vm.view.translator
+Backend: {
+  vm: Web server {
+    view: Route(view) {
+      translator <-> _.module.get_translation
+      get_predicts <-> _.module.get_predict_data
+    }
+    module: module {
+      get_translation <-> get_cambridge_translate <-> _._.internet.Cambridge Website
+      get_translation <-> get_google_translate <-> _._.internet.Google API
+      get_translation <-> get_azure_translate <-> _._.internet.Azure API
+    }
+  }
+  internet: {
+    Google API
+    Azure API
+    Cambridge Website
+  }
+}
+# Backend <-> Google API
+# Backend <-> Azure API
+# Backend <-> Cambridge Website
+# Backend <-> Cambridge Predict: 預測使用者填入的單字
