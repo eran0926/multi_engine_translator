@@ -1,8 +1,6 @@
 import requests
 import uuid
 from bs4 import BeautifulSoup
-# from app.models.log import get_logger
-# from log import get_logger
 import configparser
 from pathlib import Path
 from google.cloud import translate_v2 as translate
@@ -19,9 +17,7 @@ except ImportError:
 
 # read config
 config = configparser.ConfigParser(interpolation=None)
-# config.read(Path('config/config.ini'))
 config.read(Path(__file__).parent.parent.joinpath('config', 'config.ini'))
-# config.read(Path(__file__).parent.parent.joinpath('config', 'secret_config.ini'))
 
 logger = get_logger(__name__)
 
@@ -90,7 +86,6 @@ def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
         tar_lan = "zh-Hant"
 
-    # api_key = config["google"]["api_key"]
     api_key = getenv("GOOGLE_TRANSLATION_API_KEY")
     endpoint = config["google"]["endpoint"]
 
@@ -116,23 +111,10 @@ def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     else:
         return None
 
-
-    # try:
-    #     translate_client = translate.Client(client_options={"api_key": api_key})
-    
-    #     result = translate_client.translate(text, target_language=tar_lan)
-    # except Exception as e:
-    #     logger.error(e)
-    #     return None
-    # return result["translatedText"]
-
-
-
 def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
         tar_lan = "zh-Hant"
 
-    # api_key = config["azure"]["api_key"]
     api_key = getenv("AZURE_TRANSLATION_API_KEY")
     endpoint = config["azure"]["endpoint"]
     location = config["azure"]["location"]
@@ -161,7 +143,6 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
     r = requests.post(constructed_url, params=params,
                       headers=headers, json=body)
-    # print(r.json())
     if r.status_code == 200:
         response = r.json()
         return response[0]["translations"][0]["text"]
@@ -170,7 +151,6 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
 
 def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
-    # engine_list = ["cambridge", "azure"]
     logger.debug(engines)
     response = {}
     for engine in engines:
@@ -186,8 +166,6 @@ def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
             r = get_google_translate(text, ori_lan, tar_lan)
             if r:
                 response[engine] = r
-        # else:
-            # response[engine] = None
     logger.info(response)
     return response
 
