@@ -6,6 +6,10 @@ from bs4 import BeautifulSoup
 import configparser
 from pathlib import Path
 from google.cloud import translate_v2 as translate
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
 
 try:
     from .log import get_logger
@@ -17,7 +21,7 @@ except ImportError:
 config = configparser.ConfigParser(interpolation=None)
 # config.read(Path('config/config.ini'))
 config.read(Path(__file__).parent.parent.joinpath('config', 'config.ini'))
-config.read(Path(__file__).parent.parent.joinpath('config', 'secret_config.ini'))
+# config.read(Path(__file__).parent.parent.joinpath('config', 'secret_config.ini'))
 
 logger = get_logger(__name__)
 
@@ -86,14 +90,12 @@ def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
         tar_lan = "zh-Hant"
 
-    api_key = config["google"]["api_key"]
+    # api_key = config["google"]["api_key"]
+    api_key = getenv("GOOGLE_TRANSLATION_API_KEY")
     endpoint = config["google"]["endpoint"]
-    project_id = config["google"]["project_id"]
 
 
     headers = {
-        # 'X-goog-api-key': api_key,
-        # 'x-goog-user-project': project_id,
         'Content-type': 'application/json; charset=utf-8'
     }
 
@@ -130,7 +132,8 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
         tar_lan = "zh-Hant"
 
-    api_key = config["azure"]["api_key"]
+    # api_key = config["azure"]["api_key"]
+    api_key = getenv("AZURE_TRANSLATION_API_KEY")
     endpoint = config["azure"]["endpoint"]
     location = config["azure"]["location"]
 
