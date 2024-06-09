@@ -1,0 +1,2 @@
+2024-06-09 11:07:26,610 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-09 11:07:31,480 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'isolated', 'pos': 'adjective', 'to': ['偏遠的']}], 'google': '孤立', 'azure': '孤立'}

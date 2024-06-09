@@ -3,6 +3,7 @@ import sys
 from logging.handlers import TimedRotatingFileHandler
 import configparser
 from pathlib import Path
+from os.path import join
 
 # read config
 config = configparser.ConfigParser(interpolation=None)
@@ -14,6 +15,7 @@ config.read(Path(__file__).parent.parent.joinpath('config', 'config.ini'))
 FORMAT = config["logger"]["log_format"]
 FORMATTER = logging.Formatter(config["logger"]["log_format"])
 LOG_FILE = config["logger"]["log_file"]
+LOG_FILE = join("Logs", LOG_FILE)
 
 # logging.basicConfig(level=logging.DEBUG, format=FORMAT)
 

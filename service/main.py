@@ -1,4 +1,4 @@
-
+from waitress import serve
 from app import create_app
 
 app = create_app('testing')
@@ -10,4 +10,5 @@ app = create_app('testing')
 
 
 if __name__ == '__main__':
-    app.run("0.0.0.0", 80)
+    # app.run("0.0.0.0", 80)
+    serve(app, host='0.0.0.0', port=80)
