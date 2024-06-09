@@ -1,2 +1,20 @@
 2024-06-09 11:07:26,610 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
 2024-06-09 11:07:31,480 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'isolated', 'pos': 'adjective', 'to': ['偏遠的']}], 'google': '孤立', 'azure': '孤立'}
+2024-06-09 22:16:40,142 get_translation.py Logger:app.models.get_translation DEBUG:['cambridge', 'google', 'azure']
+2024-06-09 22:16:43,275 get_translation.py Logger:app.models.get_translation INFO:{'cambridge': [{'from': 'how are you?', 'pos': 'phrase', 'to': ['（用於打招呼）你好嗎?']}], 'google': '你好嗎？', 'azure': '你好嗎？'}
+2024-06-09 22:32:30,932 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:32:32,202 get_translation.py Logger:__main__ INFO:{'azure': '你好嗎？'}
+2024-06-09 22:33:07,662 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:33:22,700 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:33:24,562 get_translation.py Logger:__main__ INFO:{'azure': '你好嗎？', 'cambridge': [{'from': 'how', 'pos': 'adverb', 'to': ['如何，怎麼']}]}
+2024-06-09 22:34:05,863 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:34:07,488 get_translation.py Logger:__main__ INFO:{'azure': '你好嗎？', 'cambridge': [{'from': 'how', 'pos': 'adverb', 'to': ['如何，怎麼']}]}
+2024-06-09 22:36:14,448 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:36:16,207 get_translation.py Logger:__main__ INFO:{'azure': '你好嗎？', 'cambridge': [{'from': 'how', 'pos': 'adverb', 'to': ['如何，怎麼']}]}
+2024-06-09 22:38:48,492 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:38:50,098 get_translation.py Logger:__main__ INFO:{'azure': '你好嗎？', 'cambridge': [{'from': 'how', 'pos': 'adverb', 'to': ['如何，怎麼']}]}
+2024-06-09 22:39:43,922 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:40:39,919 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:40:41,671 get_translation.py Logger:__main__ INFO:{'azure': '你好嗎？', 'cambridge': [{'from': 'how', 'pos': 'adverb', 'to': ['如何，怎麼']}]}
+2024-06-09 22:40:53,342 get_translation.py Logger:__main__ DEBUG:['google', 'azure', 'cambridge']
+2024-06-09 22:40:54,708 get_translation.py Logger:__main__ INFO:{'google': '你好嗎？', 'azure': '你好嗎？', 'cambridge': [{'from': 'how', 'pos': 'adverb', 'to': ['如何，怎麼']}]}

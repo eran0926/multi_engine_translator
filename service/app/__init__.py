@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, url_for
+from flask import Flask, send_from_directory, url_for, redirect
 
 from .view.translator import translator
 
@@ -15,7 +15,8 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return 'success'
+        # return 'success'
+        return redirect(url_for('translator.index'))
 
     @app.route('/favicon.ico')
     def favicon():

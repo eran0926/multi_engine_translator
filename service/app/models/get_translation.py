@@ -86,17 +86,51 @@ def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
         tar_lan = "zh-Hant"
 
-    translate_client = translate.Client()
+    api_key = config["google"]["api_key"]
+    endpoint = config["google"]["endpoint"]
+    project_id = config["google"]["project_id"]
 
-    result = translate_client.translate(text, target_language=tar_lan)
 
-    return result["translatedText"]
+    headers = {
+        # 'X-goog-api-key': api_key,
+        # 'x-goog-user-project': project_id,
+        'Content-type': 'application/json; charset=utf-8'
+    }
+
+    params = {
+        'key': api_key
+    }
+
+    body = {
+        "q": text,
+        "target": tar_lan
+    }
+
+    r = requests.post(endpoint, params=params, headers=headers, json=body)
+    print(r.json())
+    if r.status_code == 200:
+        response = r.json()
+        return response["data"]["translations"][0]["translatedText"]
+    else:
+        return None
+
+
+    # try:
+    #     translate_client = translate.Client(client_options={"api_key": api_key})
+    
+    #     result = translate_client.translate(text, target_language=tar_lan)
+    # except Exception as e:
+    #     logger.error(e)
+    #     return None
+    # return result["translatedText"]
+
+
 
 def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
         tar_lan = "zh-Hant"
 
-    key = config["azure"]["key"]
+    api_key = config["azure"]["api_key"]
     endpoint = config["azure"]["endpoint"]
     location = config["azure"]["location"]
 
@@ -112,7 +146,7 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
         params['from'] = ori_lan
 
     headers = {
-        'Ocp-Apim-Subscription-Key': key,
+        'Ocp-Apim-Subscription-Key': api_key,
         'Ocp-Apim-Subscription-Region': location,
         'Content-type': 'application/json',
         'X-ClientTraceId': str(uuid.uuid4())
@@ -133,16 +167,22 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
 
 def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
-    engine_list = ["cambridge", "azure"]
+    # engine_list = ["cambridge", "azure"]
     logger.debug(engines)
     response = {}
     for engine in engines:
         if engine == "cambridge" and ori_lan =="en":
-            response[engine] = get_cambridge_translate(text)
+            r = get_cambridge_translate(text)
+            if r:
+                response[engine] = r
         elif engine == "azure":
-            response[engine] = get_azure_translate(text, ori_lan, tar_lan)
+            r = get_azure_translate(text, ori_lan, tar_lan)
+            if r:
+                response[engine] = r
         elif engine == "google":
-            response[engine] = get_google_translate(text, ori_lan, tar_lan)
+            r = get_google_translate(text, ori_lan, tar_lan)
+            if r:
+                response[engine] = r
         # else:
             # response[engine] = None
     logger.info(response)
@@ -154,11 +194,11 @@ def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
 if __name__ == "__main__":
     # main_logger = get_logger("main")
     # t = get_cambridge_translate('how are you?')
-    t = get_cambridge_translate('hi')
+    # t = get_cambridge_translate('hi')
     # t = get_cambridge_translate('honour')
     # t = get_azure_translate("he")
     # get_predict_data("ap")
-    # t = get_translation("How are you?", engines=["google", "azure", "cambridge"])
+    t = get_translation("How are you?", engines=["google", "azure", "cambridge"], ori_lan="en")
     # t = get_translation("Hoefefefefefefefefe?as", engines=[ "cambridge"])
     print("-----------------------")
     print(t)

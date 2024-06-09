@@ -38,4 +38,4 @@ COPY --chmod=777 . .
 # CMD ["main.py"]
 CMD python main.py
 
-EXPOSE 80
+EXPOSE 8080
