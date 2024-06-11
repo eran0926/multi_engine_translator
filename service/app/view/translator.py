@@ -4,6 +4,10 @@ from app.models.get_translation import get_translation, get_predict_data
 
 translator = Blueprint('translator', __name__)
 
+logger = get_logger("view.translator", level="INFO")
+
+def log_server_msg(msg):
+    logger.info( "client_ip:" + request.environ["REMOTE_ADDR"] + " " + msg)
 
 @translator.route('/')
 def index():
@@ -22,16 +26,26 @@ def tran():
             text = data["text"]
             engines = data["engines"]
         except:
+            log_server_msg("Missing translator arg")
             return 'Missing arg', 400
 
-        re["translations"] = get_translation(text, ori_lan, tar_lan, engines)
+        translation = get_translation(text, ori_lan, tar_lan, engines)
+        log_server_msg("Using:\n" + \
+                        "\tori_lan: " + str(ori_lan) + ",\n"\
+                        "\ttar_lan: " + str(tar_lan) + ",\n"\
+                        "\ttext   : " + str(text)    + ",\n"\
+                        "\tengines :" + str(engines) + ",\n"\
+                        "\tget translation: " + str(translation))
+        re["translations"] = translation
         response_data.append(re)
     return jsonify(response_data)
 
 
 @translator.route('/get_predicts')
 def get_predicts():
-    response = get_predict_data(request.args['q'])
+    query = request.args['q']
+    log_server_msg("get_predicts with query:" + query)
+    response = get_predict_data(query)
     # print(response)
     return jsonify(response)
 

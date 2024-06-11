@@ -1,4 +1,5 @@
-FROM python:3.12.4-slim-bookworm as base
+# FROM python:3.12.4-slim-bookworm as base
+FROM python:3.12.4-alpine3.20 as base
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -22,20 +23,12 @@ FROM base AS runtime
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 
-RUN useradd --create-home appuser
+# RUN useradd --create-home appuser #For Bookworm
+RUN adduser -S appuser #For Alpine
 WORKDIR /home/appuser
 USER appuser
 
 COPY --chmod=777 . .
-# RUN ls -la
-# USER root
-# RUN chmod 777 .
-# RUN chmod 777 * || ls -la && echo 'chmod failed'
-
-# USER appuser
-
-# ENTRYPOINT ["python"]
-# CMD ["main.py"]
 CMD python main.py
 
 EXPOSE 8080

@@ -19,7 +19,7 @@ except ImportError:
 config = configparser.ConfigParser(interpolation=None)
 config.read(Path(__file__).parent.parent.joinpath('config', 'config.ini'))
 
-logger = get_logger(__name__)
+logger = get_logger("get_translation")
 
 def get_page(url, header=None, params=None):
     header = header or {
@@ -151,7 +151,7 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
 
 
 def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
-    logger.debug(engines)
+    # logger.debug(engines)
     response = {}
     for engine in engines:
         if engine == "cambridge" and ori_lan =="en":
@@ -166,7 +166,7 @@ def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
             r = get_google_translate(text, ori_lan, tar_lan)
             if r:
                 response[engine] = r
-    logger.info(response)
+    # logger.info(response)
     return response
 
 
