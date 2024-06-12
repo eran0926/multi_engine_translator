@@ -19,7 +19,7 @@ document.getElementById("in_textarea").addEventListener('input', () => {
                         in_textarea_change(document.getElementById("in_textarea").value)
                         queued = false
 
-                    }, 300);
+                    }, 500);
                 }
             }
         }, 100);
