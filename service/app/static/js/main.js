@@ -113,6 +113,10 @@ function restTextarea() {
 }
 
 function submitTran() {
+    $('#tranSubmitBtn').prop('disabled', true)
+    document.getElementById("rest_div").setAttribute("style", "display: none;")
+    document.getElementById("tran_loader").setAttribute("style", "display: block;")
+
     var ori_lan = $('#ori_lan_select').val()
     var tar_lag = $('#tar_lan_select').val()
     var text = $('#in_textarea').val()
@@ -137,6 +141,12 @@ function submitTran() {
         changeTranResult(re)
 
     }
+
+    document.getElementById("rest_div").setAttribute("style", "display: block;")
+    document.getElementById("tran_loader").setAttribute("style", "display: none;")
+    setTimeout(function () {
+        $('#tranSubmitBtn').prop('disabled', false)
+    }, 500);
 }
 
 function postJsonData(url, data) {
