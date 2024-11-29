@@ -1,4 +1,6 @@
 import requests
+import aiohttp
+import asyncio
 import uuid
 from bs4 import BeautifulSoup
 import configparser
@@ -28,6 +30,16 @@ def get_page(url, header=None, params=None):
     headers.update(header)
     r = requests.get(url, headers=headers, params=params)
     return r
+
+
+async def get_page_async(url, header=None, params=None):
+    header = header or {
+        'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+    headers = requests.utils.default_headers()
+    headers.update(header)
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, headers=headers, params=params) as response:
+            return await response
 
 def get_predict_data(text):
     url = "https://dictionary.cambridge.org/zht/autocomplete/amp?dataset=english-chinese-traditional"
@@ -81,6 +93,28 @@ def get_cambridge_translate(text=""):
         return trans
     else:
         return None
+    
+async def get_cambridge_translate_async(text=""):
+    '''
+    get cambridge dictionary translate
+    '''
+    text = text.replace(' ', '-')
+    base_url = config["cambridge"]["base_url"]
+    url = base_url + text
+    r = await get_page_async(url)
+
+    result = {
+        "engine": "cambridge",
+        "statua_code": r.status,
+        "ori": text,
+        "translations": []
+    }
+
+    if r.status != 200 or r.url == base_url:
+        return result
+    
+    # TODO: parse html
+
 
 def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     if tar_lan == "":
@@ -176,10 +210,10 @@ if __name__ == "__main__":
     # main_logger = get_logger("main")
     # t = get_cambridge_translate('how are you?')
     # t = get_cambridge_translate('hi')
-    # t = get_cambridge_translate('honour')
+    t = get_cambridge_translate('honour')
     # t = get_azure_translate("he")
     # get_predict_data("ap")
-    t = get_translation("How are you?", engines=["google", "azure", "cambridge"], ori_lan="en")
+    # t = get_translation("How are you?", engines=["google", "azure", "cambridge"], ori_lan="en")
     # t = get_translation("Hoefefefefefefefefe?as", engines=[ "cambridge"])
     print("-----------------------")
     print(t)
