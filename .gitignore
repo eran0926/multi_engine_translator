@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 
 app/config/secret_config.ini
+app/service/Logs/
