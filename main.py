@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from waitress import serve
 from app import create_app
 

@@ -1,10 +1,10 @@
 # FROM python:3.12.4-slim-bookworm as base
-FROM python:3.12.4-alpine3.20 as base
+FROM python:3.12.4-alpine3.20 AS base
 
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONFAULTHANDLER 1
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONFAULTHANDLER=1
 
 
 FROM base AS python-deps
@@ -28,7 +28,8 @@ RUN adduser -S appuser #For Alpine
 WORKDIR /home/appuser
 USER appuser
 
-COPY --chmod=777 . .
-CMD python main.py
+COPY --chmod=777 ./app ./app
+COPY --chmod=777 ./main.py .
+CMD ["python", "main.py"]
 
 EXPOSE 8080

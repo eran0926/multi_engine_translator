@@ -1,14 +1,15 @@
-import requests
-import aiohttp
-import asyncio
+import configparser
+from os import getenv
+from pathlib import Path
 import time
 import uuid
+
+import aiohttp
+import asyncio
 from bs4 import BeautifulSoup
-import configparser
-from pathlib import Path
-from google.cloud import translate_v2 as translate
-from os import getenv
 from dotenv import load_dotenv
+from google.cloud import translate_v2 as translate
+import requests
 
 load_dotenv()
 
