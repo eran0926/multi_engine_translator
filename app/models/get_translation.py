@@ -150,7 +150,7 @@ async def get_cambridge_translate_async(text=""):
         tran = {
             "ori": def_body.find("div", class_="di-title").get_text(),
             "pos": "",
-            "tran": []
+            "trans": []
         }
         tran['ori'] = def_body.find("div", class_="di-title").get_text()
         try:
@@ -196,12 +196,49 @@ def get_google_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
     }
 
     r = requests.post(endpoint, params=params, headers=headers, json=body)
-    print(r.json())
+    # print(r.json())
     if r.status_code == 200:
         response = r.json()
         return response["data"]["translations"][0]["translatedText"]
     else:
         return None
+
+
+async def get_google_translate_async(text="", ori_lan=None, tar_lan="zh-Hant"):
+    if tar_lan == "":
+        tar_lan = "zh-Hant"
+
+    api_key = getenv("GOOGLE_TRANSLATION_API_KEY")
+    endpoint = config["google"]["endpoint"]
+
+    headers = {
+        'Content-type': 'application/json; charset=utf-8'
+    }
+
+    params = {
+        'key': api_key
+    }
+
+    body = {
+        "q": text,
+        "target": tar_lan
+    }
+
+    res = {
+        "engine": "google",
+        "code": 200,
+        "tran": ""
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(endpoint, params=params, headers=headers, json=body) as response:
+            if response.status == 200:
+                r = await response.json()
+                res["tran"] = r["data"]["translations"][0]["translatedText"]
+                return res
+            else:
+                res["code"] = 600
+                return res
 
 
 def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
@@ -243,6 +280,53 @@ def get_azure_translate(text="", ori_lan=None, tar_lan="zh-Hant"):
         return None
 
 
+async def get_azure_translate_async(text="", ori_lan=None, tar_lan="zh-Hant"):
+    if tar_lan == "":
+        tar_lan = "zh-Hant"
+
+    api_key = getenv("AZURE_TRANSLATION_API_KEY")
+    endpoint = config["azure"]["endpoint"]
+    location = config["azure"]["location"]
+
+    path = '/translate'
+    constructed_url = endpoint + path
+
+    params = {
+        'api-version': '3.0',
+        'to': tar_lan
+    }
+
+    if ori_lan != None and ori_lan != "":
+        params['from'] = ori_lan
+
+    headers = {
+        'Ocp-Apim-Subscription-Key': api_key,
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+        'X-ClientTraceId': str(uuid.uuid4())
+    }
+
+    body = [{
+        'text': text
+    }]
+
+    res = {
+        "engine": "azure",
+        "code": 200,
+        "tran": ""
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(constructed_url, params=params, headers=headers, json=body) as response:
+            if response.status == 200:
+                r = await response.json()
+                res["tran"] = r[0]["translations"][0]["text"]
+                return res
+            else:
+                res["code"] = 600
+                return res
+
+
 def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
     # logger.debug(engines)
     response = {}
@@ -262,6 +346,25 @@ def get_translation(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
     # logger.info(response)
     return response
 
+
+async def get_translation_async(text, ori_lan=None, tar_lan="zh-Hant", engines=[]):
+    # logger.debug(engines)
+    response = {}
+    tasks = []
+    for engine in engines:
+        if engine == "cambridge" and ori_lan == "en":
+            tasks.append(get_cambridge_translate_async(text))
+        elif engine == "azure":
+            tasks.append(get_azure_translate_async(text, ori_lan, tar_lan))
+        elif engine == "google":
+            tasks.append(get_google_translate_async(text, ori_lan, tar_lan))
+    # logger.info(response)
+    results = await asyncio.gather(*tasks)
+
+    for r in results:
+        response[r["engine"]] = r
+
+    return response
 
 if __name__ == "__main__":
     # main_logger = get_logger("main")
@@ -293,12 +396,58 @@ if __name__ == "__main__":
     #     get_cambridge_translate(i)
     # print("Time used: ", time.time()-start_time)
 
-    async def main():
+    # async def main():
+    #     start_time = time.time()
+    #     tasks = [get_cambridge_translate_async(i) for i in w]
+    #     results = await asyncio.gather(*tasks)
+    #     for r in results:
+    #         print(r)
+    #         print("====================================")
+    #     print("Time used: ", time.time()-start_time)
+    # asyncio.run(main())
+
+    # start_time = time.time()
+    # print(get_azure_translate("he"))
+    # print(get_azure_translate("he"))
+    # print("Azure sync used: ", time.time()-start_time)
+
+    # async def azure_async_test():
+    #     start_time = time.time()
+    #     tasks = [get_azure_translate_async("he") for i in range(2)]
+    #     results = await asyncio.gather(*tasks)
+    #     for r in results:
+    #         print(r)
+    #         # print("====================================")
+    #     print("Azure async used: ", time.time()-start_time)
+    # asyncio.run(azure_async_test())
+
+    # start_time = time.time()
+    # print(get_google_translate("how are you"))
+    # print(get_google_translate("he"))
+    # print("Google sync used: ", time.time()-start_time)
+
+    # async def google_async_test():
+    #     start_time = time.time()
+    #     tasks = [get_google_translate_async("how about") for i in range(1)]
+    #     results = await asyncio.gather(*tasks)
+    #     for r in results:
+    #         print(r)
+    #         # print("====================================")
+    #     print("Google async used: ", time.time()-start_time)
+    # asyncio.run(google_async_test())
+
+    start_time = time.time()
+    print(get_translation("how are you", engines=[
+          "google", "azure", "cambridge"], ori_lan="en"))
+    print("All sync used: ", time.time()-start_time)
+
+    async def all_async_test():
         start_time = time.time()
-        tasks = [get_cambridge_translate_async(i) for i in w]
+        tasks = [get_translation_async("how are you", engines=[
+                                       "google", "azure", "cambridge"], ori_lan="en") for i in range(1)]
         results = await asyncio.gather(*tasks)
         for r in results:
             print(r)
-            print("====================================")
-        print("Time used: ", time.time()-start_time)
-    asyncio.run(main())
+            # print("====================================")
+        print("All async used: ", time.time()-start_time)
+    asyncio.run(all_async_test())
