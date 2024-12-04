@@ -1,12 +1,13 @@
 {
-    "engine":"string",
-    "statua_code": "int",
-    "ori":"string",
+    "engine": "string",
+    // "statua_code": "int",
     "translations": [
         {
-            "pos":"string",
-            "trans":["string"]
+            "ori": "string",
+            "pos": "string",
+            "trans": [
+                "string"
+            ]
         }
     ]
-
 }
