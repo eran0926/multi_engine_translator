@@ -112,11 +112,12 @@ def get_cambridge_translate(text=""):
         return None
 
 
-async def get_cambridge_translate_async(text=""):
+async def get_cambridge_translate_async(row_text=""):
     '''
     get cambridge dictionary translate
     '''
-    text = text.strip().replace(' ', '-')
+
+    text = row_text.strip().replace(' ', '-').replace('/', '-')
     base_url = config["cambridge"]["base_url"]
     url = base_url + text
     page, status, url = await get_text_async(url)
@@ -124,7 +125,7 @@ async def get_cambridge_translate_async(text=""):
     result = {
         "engine": "cambridge",
         "code": status,
-        "ori": text,
+        "ori": row_text,
         "translations": []
     }
 
@@ -166,7 +167,7 @@ async def get_cambridge_translate_async(text=""):
 
         for sense_body in sense_bodys:
             for def_block in sense_body.find_all("div", class_="def-block ddef_block", recursive=False):
-                tran['tran'].append(def_block.find(
+                tran['trans'].append(def_block.find(
                     "span", class_="trans").get_text())
             # tran['tran'].append(de.find(
             #     "div", "def-block ddef_block").find("span", class_="trans").get_text())
