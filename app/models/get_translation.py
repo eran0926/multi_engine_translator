@@ -119,9 +119,8 @@ async def get_cambridge_translate_async(row_text=""):
 
     text = row_text.strip().replace(' ', '-').replace('/', '-')
     base_url = config["cambridge"]["base_url"]
-    url = base_url + text
-    page, status, url = await get_text_async(url)
-
+    query_url = base_url + text
+    page, status, url = await get_text_async(query_url)
     result = {
         "engine": "cambridge",
         "code": status,
@@ -133,7 +132,7 @@ async def get_cambridge_translate_async(row_text=""):
         result["code"] = 600
         return result
 
-    if url == base_url:
+    if url != query_url:
         result["code"] = 404
         return result
 
@@ -362,10 +361,7 @@ async def get_translation_async(text, ori_lan=None, tar_lan="zh-Hant", engines=[
     # logger.info(response)
     results = await asyncio.gather(*tasks)
 
-    for r in results:
-        response[r["engine"]] = r
-
-    return response
+    return results
 
 if __name__ == "__main__":
     # main_logger = get_logger("main")
