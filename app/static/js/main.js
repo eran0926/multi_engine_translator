@@ -5,6 +5,7 @@ $('#tranSubmitBtn').on('click', submitTran)
 let queued = false
 let timer
 let old_input = ''
+const rootUrl = ''
 document.getElementById("in_textarea").addEventListener('input', () => {
     old_input = document.getElementById("in_textarea").value
     clearTimeout(timer);
@@ -16,7 +17,7 @@ document.getElementById("in_textarea").addEventListener('input', () => {
                     setTimeout(function () {
 
                         console.log("catching predict")
-                        in_textarea_change(document.getElementById("in_textarea").value)
+                        in_textarea_change()
                         queued = false
 
                     }, 500);
@@ -35,11 +36,11 @@ function switch_lan() {
     ori_lan_select.val(ori_tar_lan);
 }
 
-function in_textarea_change(text) {
+function in_textarea_change() {
     // var in_textarea = $('#in_textarea');
     // var text = in_textarea.val();
+    text = document.getElementById("in_textarea").value
     predicts = get_predicts(text);
-    change_predict(predicts)
 }
 
 function get_predicts(text) {
@@ -49,9 +50,9 @@ function get_predicts(text) {
     //     re[i] = { "word": "" }
     // }
     $.ajax({
-        url: '/translator/get_predicts?q=' + text,
+        url: rootUrl + '/get_predicts?q=' + text,
         method: 'GET',
-        async: false,
+        // async: false,
         // dataType: "json",
         success: function (res) {
             // console.log('success', typeof (res))
@@ -61,7 +62,8 @@ function get_predicts(text) {
                 // re.push({ 'word': element['word'] });
                 // console.log(re.length)
             });
-            return;
+            update_predict(re)
+
         },
         error: function (res) {
             console.log("Error:");
@@ -74,9 +76,9 @@ function get_predicts(text) {
     return re;
 }
 
-function change_predict(predict_arr) {
+function update_predict(predict_arr) {
     predicts = predict_arr
-    // console.log(predicts)
+    console.log(predicts)
     // console.log(typeof (predicts))
     max_predict = 5;
     predict_num = Math.min(max_predict, predicts.length)
@@ -110,13 +112,32 @@ function use_predict(text) {
 
 function restTextarea() {
     $('#in_textarea').val('')
+    $('#in_textarea').focus()
 }
 
 function submitTran() {
+
+    postData = getPostData()
+
+    if (!getPostData) {
+        return
+    }
+
     $('#tranSubmitBtn').prop('disabled', true)
-    document.getElementById("rest_div").setAttribute("style", "display: none;")
+    document.getElementById("result_div").setAttribute("style", "display: none;")
     document.getElementById("tran_loader").setAttribute("style", "display: block;")
 
+
+    var url = rootUrl + '/get_translation_async'
+    postJsonData(url, postData)
+
+
+
+
+
+}
+
+function getPostData() {
     var ori_lan = $('#ori_lan_select').val()
     var tar_lag = $('#tar_lan_select').val()
     var text = $('#in_textarea').val()
@@ -128,90 +149,117 @@ function submitTran() {
             engines.push($(this).val())
         }
     })
-    if (text != '') {
-        var data = [{
-            'from': ori_lan,
-            'to': tar_lag,
-            'text': text,
-            'engines': engines
-        }]
-        var url = '/translator/translator'
-        re = postJsonData(url, data)
-        console.log(re)
-        changeTranResult(re)
 
+    if (text == '') {
+        return null
     }
 
-    document.getElementById("rest_div").setAttribute("style", "display: block;")
-    document.getElementById("tran_loader").setAttribute("style", "display: none;")
-    setTimeout(function () {
-        $('#tranSubmitBtn').prop('disabled', false)
-    }, 500);
+    return [{
+        'from': ori_lan,
+        'to': tar_lag,
+        'text': text,
+        'engines': engines
+    }]
 }
+
 
 function postJsonData(url, data) {
-    var re;
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: JSON.stringify(data),
-        contentType: "application/json;charset=utf-8",
-        async: false,
-        success: function (res) {
-            // console.log('ajax result:')
-            // console.log(res.stringify)
-            re = res
-        },
-        error: function (res) {
-            console.log('ajax error:')
-            console.log(res)
-            re = 'error'
-        }
-    });
-    return re
-}
+    const start = Date.now();
 
-function changeTranResult(data) {
     resultTable = $('#resultTable').find('tbody')
     resultTable.html('')
-    for (let dataIndex = 0; dataIndex < data.length; dataIndex++) {
-        Object.entries(data[dataIndex]['translations']).forEach(([engine, tranData]) => {
-            if (engine == 'cambridge') {
-                console.log(tranData)
-                for (let index = 0; index < tranData.length; index++) {
-                    html = '<tr>'
-                    if (index == 0) {
-                        html += '<td rowspan="' + tranData.length + '">' + '劍橋' + '</td>\n'
-                    }
-                    html += '<td>' + tranData[index]['pos'] + '</td>\n'
-                    // html += '<td>' + tranData[index]['from'] + '</td>\n'
-                    translations = tranData[index]['to']
-                    html += '<td><ul>'
-                    for (let i = 0; i < translations.length; i++) {
-                        html += '<li>' + translations[i] + '</li>'
-                    }
-                    html += '</ul></td>\n'
-                    html += '</tr>'
-                    resultTable.html(resultTable.html() + html)
-
-                }
-            }
-            else if (engine == 'azure') {
-                html = '<tr>'
-                html += '<td>' + '微軟' + '</td>'
-                html += '<td>' + 'none' + '</td>\n'
-                html += '<td>' + tranData + '</td>\n'
-                html += '</tr>'
-                resultTable.html(resultTable.html() + html)
-            }
-            else if (engine == 'google') {
-                html = '<tr>'
-                html += '<td>' + 'Google' + '</td>'
-                html += '<td>' + 'none' + '</td>\n'
-                html += '<td>' + tranData + '</td>\n'
-                html += '</tr>'
-                resultTable.html(resultTable.html() + html)
-            }
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    })
+        .then((response) => {
+            r = response.json()
+            console.log(r)
+            return r
         })
+        .then(response => {
+            console.log('Success:', response);
+            UpdateTranResult(response)
+            const end = Date.now();
+            console.log(`Execution time: ${end - start} ms`);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            resultTable = $('#resultTable').find('tbody')
+            resultTable.append('<tr><td colspan="3">翻譯失敗</td></tr>')
+        })
+        .finally(() => {
+            document.getElementById("result_div").setAttribute("style", "display: block;")
+            document.getElementById("tran_loader").setAttribute("style", "display: none;")
+            setTimeout(function () {
+                $('#tranSubmitBtn').prop('disabled', false)
+            }, 500);
+        })
+
+}
+
+function UpdateTranResult(result) {
+
+    data = result['data']['translations'][0]
+
+    for (let tran of data) {
+        if (tran['code'] != 200) {
+            continue
+        }
+
+        if (tran['engine'] == 'cambridge') {
+            for (let tranData of tran['translations']) {
+                engineTd = document.createElement('td')
+                engineTd.innerText = '劍橋'
+
+                tr = document.createElement('tr')
+                tr.appendChild(engineTd)
+
+                posTd = document.createElement('td')
+                posTd.innerText = tranData['pos']
+                tr.appendChild(posTd)
+                ul = document.createElement('ul')
+                for (let translation of tranData['trans']) {
+                    li = document.createElement('li')
+                    li.innerText = translation
+                    ul.appendChild(li)
+                }
+
+                tranTd = document.createElement('td')
+                tranTd.appendChild(ul)
+                tr.appendChild(tranTd)
+
+                resultTable.append(tr)
+            }
+        }
+        if (tran['engine'] == 'azure') {
+            tr = document.createElement('tr')
+            engineTd = document.createElement('td')
+            engineTd.innerText = '微軟'
+            tr.appendChild(engineTd)
+            posTd = document.createElement('td')
+            posTd.innerText = 'none'
+            tr.appendChild(posTd)
+            tranTd = document.createElement('td')
+            tranTd.innerText = tran['tran']
+            tr.appendChild(tranTd)
+            resultTable.append(tr)
+        }
+        if (tran['engine'] == 'google') {
+            tr = document.createElement('tr')
+            engineTd = document.createElement('td')
+            engineTd.innerText = 'Google'
+            tr.appendChild(engineTd)
+            posTd = document.createElement('td')
+            posTd.innerText = 'none'
+            tr.appendChild(posTd)
+            tranTd = document.createElement('td')
+            tranTd.innerText = tran['tran']
+            tr.appendChild(tranTd)
+            resultTable.append(tr)
+        }
     }
 }
