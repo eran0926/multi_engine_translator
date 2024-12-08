@@ -7,7 +7,7 @@ from app.models.get_translation import get_translation, get_translation_async, g
 
 translator = Blueprint('translator', __name__)
 
-logger = get_logger("view.translator", level="INFO")
+logger = get_logger("view.translator", level="INFO", queue_handler=True)
 
 
 def log_server_msg(msg):
@@ -19,8 +19,8 @@ def index():
     return render_template("translator.html")
 
 
-@translator.route('/translator', methods=['POST'])
-def tran():
+@translator.route('/get_translation', methods=['POST'])
+def get_tran():
     request_data = request.get_json()
     response_data = list()
     for data in request_data:
@@ -35,19 +35,19 @@ def tran():
             return jsonify({"error": {"code": 400, "message": "Missing arg"}}), 400
 
         translation = get_translation(text, ori_lan, tar_lan, engines)
-        # log_server_msg("Using:\n" +
-        #                "\tori_lan: " + str(ori_lan) + ",\n"
-        #                "\ttar_lan: " + str(tar_lan) + ",\n"
-        #                "\ttext   : " + str(text) + ",\n"
-        #                "\tengines :" + str(engines) + ",\n"
-        #                "\tget translation: " + str(translation))
+        log_server_msg("Using:\n" +
+                       "\tori_lan: " + str(ori_lan) + ",\n"
+                       "\ttar_lan: " + str(tar_lan) + ",\n"
+                       "\ttext   : " + str(text) + ",\n"
+                       "\tengines :" + str(engines) + ",\n"
+                       "\tget translation: " + str(translation))
         re["translations"] = translation
         response_data.append(re)
     return jsonify(response_data)
 
 
-@translator.route('/translator_async', methods=['POST'])
-async def tran_async():
+@translator.route('/get_translation_async', methods=['POST'])
+async def get_tran_async():
     request_data = request.get_json()
     response_data = {"data": {"translations": []}}
     tasks = []
