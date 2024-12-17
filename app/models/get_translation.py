@@ -132,7 +132,7 @@ async def get_cambridge_translate_async(row_text=""):
         result["code"] = 600
         return result
 
-    if url != query_url:
+    if str(url) != query_url:
         result["code"] = 404
         return result
 
