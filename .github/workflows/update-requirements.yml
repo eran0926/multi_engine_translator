@@ -1,0 +1,40 @@
+
+name: Update requirement.txt
+
+on:
+  push:
+    paths:
+      - "Pipfile"
+      - "Pipfile.lock"
+  
+jobs:
+  update-requirements:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'  # Specify your desired Python version
+          
+      - name: Install Pipenv
+        run: pip install pipenv
+        
+      - name: Export requirements.txt
+        run: pipenv requirements > requirements.txt
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add requirements.txt
+          git commit -m 'Chore: Update requirements.txt'
+          git push
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
