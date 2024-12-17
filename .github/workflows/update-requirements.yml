@@ -2,6 +2,7 @@
 name: Update requirement.txt
 
 on:
+  workflow_dispatch: 
   push:
     paths:
       - "Pipfile"
