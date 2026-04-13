@@ -1,0 +1,47 @@
+direction: right
+
+browser: "User Browser"
+
+frontend: {
+  label: "Frontend UI"
+  template: "app/templates/translator.html"
+  static_assets: "app/static/js/main.js\napp/static/css/style.css"
+}
+
+webapp: {
+  label: "Flask Web App"
+  entry: "main.py\nwaitress serve(app, port=8080)"
+  factory: "app/__init__.py\ncreate_app()"
+  route: "app/view/translator.py\nBlueprint: translator"
+  translation_service: "app/models/get_translation.py"
+  logging: "app/models/log.py"
+  config: "app/config/flask_config.py\napp/config/config.ini"
+  runtime_logs: "Logs/log"
+}
+
+external: {
+  label: "External Services"
+  cambridge: "Cambridge Dictionary"
+  google: "Google Translate API"
+  azure: "Azure Translator API"
+}
+
+browser -> frontend
+frontend -> webapp.entry
+webapp.entry -> webapp.factory
+webapp.factory -> webapp.route
+webapp.route -> webapp.translation_service
+webapp.route -> webapp.logging
+webapp.translation_service -> webapp.config
+webapp.logging -> webapp.runtime_logs
+
+webapp.route -> frontend.template : "GET /"
+frontend.static_assets -> webapp.route : "JS / CSS use API"
+
+webapp.route -> webapp.translation_service : "/get_translation"
+webapp.route -> webapp.translation_service : "/get_translation_async"
+webapp.route -> webapp.translation_service : "/get_predicts"
+
+webapp.translation_service -> external.cambridge : "predicts + translation"
+webapp.translation_service -> external.google : "sync / async"
+webapp.translation_service -> external.azure : "sync / async"
